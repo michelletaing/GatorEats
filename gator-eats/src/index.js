@@ -12,7 +12,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/menus" element={<Menus />} />
+        <Route path="/menus/:locationName" element={<Menus />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Container, Paper, Typography } from '@mui/material';
 
 function Menus() {
-  const location = useLocation();
-  const item = location.state.item;
+  const { locationName } = useParams();
   
 
   const mockMenus = [
@@ -17,7 +16,7 @@ function Menus() {
   ];
 
 
-  const menu = mockMenus.find(menu => menu.title === item.name);
+  const menu = mockMenus.find(menu => menu.title === locationName);
 
   if (!menu)
     return <div>Menu not found</div>;

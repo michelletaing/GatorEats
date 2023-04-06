@@ -20,8 +20,8 @@ function Home() {
 
     const navigate = useNavigate();
 
-    const handleClick = (item) => {
-        navigate('/menus', { state: { item } });
+    const handleClick = (locationName) => {
+        navigate(`/menus/${locationName}`);
     };
 
     return (
@@ -31,7 +31,7 @@ function Home() {
                 {mockLocations.map((item, index) => 
                 <Grid item xs={12} sm={6} md={4} key={index}>
                     <Card>
-                        <CardActionArea onClick={() => handleClick(item)}>
+                        <CardActionArea onClick={() => handleClick(item.name)}>
                             <CardMedia component="img" image={item.imageUrl} />
                             <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
