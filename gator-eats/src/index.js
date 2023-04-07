@@ -2,14 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import NavBar from './components/NavBar';
-import Home from './pages/home/Home';
 import reportWebVitals from './reportWebVitals';
+import HomePage from './pages/home/HomePage';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import LocationsPage from './pages/locations/LocationsPage';
+import { Routes, Route } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Router>
     <NavBar />
-    <Home />
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/locations" element={<LocationsPage />} />
+    </Routes>
+    </Router>
   </React.StrictMode>
 );
 

@@ -1,12 +1,11 @@
 import React from 'react';
-import MyCalendar from './calendar';
-import NavBar from './NavBar';
-import RestaurantList from './RestaurantList';
+import MyCalendar from '../../components/calendar';
+import NavBar from '../../components/NavBar';
+import RestaurantList from '../../components/RestaurantList';
 
 const HomePage = () => {
   return (
     <div>
-    <NavBar />
       <div style={{ display: 'flex', marginTop: '50px'}}>
         <div style={{ padding: '20px' ,flex:1,position : 'relative'}}>
           <MyCalendar />

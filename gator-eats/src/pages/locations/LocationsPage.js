@@ -1,5 +1,4 @@
 import React from 'react'
-import './Home.css';
 import { Container } from '@mui/material';
 import { Grid } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -7,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Typography } from '@mui/material';
 
-function Home() {
+function Locations() {
 
     const mockLocations = [
         { name: "Gator Corner Dining Center", description: "description here", imageUrl: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"},
@@ -42,4 +41,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Locations;
