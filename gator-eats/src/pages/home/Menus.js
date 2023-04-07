@@ -16,7 +16,7 @@ function Menus() {
   ];
 
 
-  const menu = mockMenus.find(menu => menu.title === locationName);
+  const menu = mockMenus.find(menu => menu.title.replace(/ /g, "-") === locationName);
 
   if (!menu)
     return <div>Menu not found</div>;

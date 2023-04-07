@@ -21,7 +21,7 @@ function Home() {
     const navigate = useNavigate();
 
     const handleClick = (locationName) => {
-        navigate(`/menus/${locationName}`);
+        navigate(`/menus/${locationName.replace(/ /g, "-")}`);
     };
 
     return (
