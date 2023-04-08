@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 import NavBar from './components/NavBar';
-import Home from './pages/home/Home';
+import Locations from './pages/locations/LocationsPage';
 import Menus from './pages/home/Menus';
 import reportWebVitals from './reportWebVitals';
 
@@ -11,7 +11,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Locations />} />
         <Route path="/menus/:locationName" element={<Menus />} />
       </Routes>
     </BrowserRouter>
