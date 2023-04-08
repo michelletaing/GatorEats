@@ -1,28 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import NavBar from './components/NavBar';
-import Locations from './pages/locations/LocationsPage';
-import Menus from './pages/home/Menus';
+import Home from './pages/home/Home';
+import Locations from './pages/locations/Locations';
+import Menus from './pages/menus/Menus';
 import reportWebVitals from './reportWebVitals';
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Locations />} />
-        <Route path="/menus/:locationName" element={<Menus />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <NavBar />
-    <App />
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/locations" element={<Locations />} />
+        <Route path="/menus/:locationName" element={<Menus />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 

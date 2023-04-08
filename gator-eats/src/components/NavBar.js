@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,7 +12,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Locations', 'Menus']; // PAGES TBD, this is just a placeholder
+const pages = [  { name: 'Locations', path: '/locations' },  { name: 'Menus', path: '/menus' },];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -31,8 +32,8 @@ function NavBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -76,8 +77,13 @@ function NavBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  component={RouterLink}
+                  to={page.path}
+                >
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -86,8 +92,8 @@ function NavBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -101,21 +107,29 @@ function NavBar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+        <Button
+          component={RouterLink}
+          to="/locations"
+          onClick={handleCloseNavMenu}
+          sx={{ my: 2, color: 'white', display: 'block' }}
+        >
+          Locations
+        </Button>
+        <Button
+          component={RouterLink}
+          to="/menus"
+          onClick={handleCloseNavMenu}
+          sx={{ my: 2, color: 'white', display: 'block' }}
+        >
+          Menus
+        </Button>
+      </Box>
+    </Toolbar>
+  </Container>
+</AppBar>
+);
 }
 
 export default NavBar;
+          
