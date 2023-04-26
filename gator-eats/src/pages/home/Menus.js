@@ -1,6 +1,15 @@
 import React from 'react';
+import './Menus.css';
 import { useParams } from 'react-router-dom';
 import { Container, Paper, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 
 function Menus() {
   const { locationName } = useParams();
@@ -23,15 +32,62 @@ function Menus() {
 
   return (
     <Container fixed>
-      <h1>{menu.title}</h1>
-
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        {menu.items.map((item, index) => (
-          <Typography gutterBottom variant="h5" component="h2">
-            {item}
-          </Typography>
-        ))}
+      <Paper sx={{ mb: '1rem', boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;' }}>
+        <Typography variant="h3" align="center" sx={{ pt: '1rem'}} gutterBottom>{menu.title}</Typography>
+        <Typography variant="h4" align="center" sx={{ pb: '1rem' }} gutterBottom>Weekly Hours</Typography>
       </Paper>
+
+      <LocalizationProvider dateAdapter={AdapterDayjs} >
+        <DatePicker sx={{ mb: '1rem'}} label="Select a day" />
+      </LocalizationProvider>
+
+      <div>
+      <Accordion sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;' }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography variant="h2" sx={{ fontFamily: 'Syne' }}>Breakfast</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;' }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography variant="h2" sx={{ fontFamily: 'Syne' }}>Lunch</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;' }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography variant="h2" sx={{ fontFamily: 'Syne' }}>Dinner</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      </div>
 
     </Container>
   );
