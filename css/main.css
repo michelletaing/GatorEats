@@ -23,3 +23,7 @@ body {
     color:rgb(124, 124, 124);
     font-weight:300;
 }
+
+.modal-backdrop {
+    opacity:0.25 !important;
+}
