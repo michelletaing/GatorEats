@@ -12,25 +12,46 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter&family=Syne&display=swap" rel="stylesheet">
     <!-- Global CSS -->
-    <link href="../css/main.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
 
     <!-- Load components -->
     <script>
         $(function() {
-          $('#navbar').load('../components/navbar.html');
+          $('#navbar').load('components/navbar.html');
         });
     </script>
   </head>
+
   <body>
     <div id="navbar"></div>
-    <div class="container">
-      <div class="mt-3 mb-3">
-        <div class="container">
-          <h1 class="mt-4 text-center" id="menu-title">Gator Corner Dining Center</h1>
-          <h3 class="text-center mb-4">Weekly Schedule</h2>
+    <div class="container" id="menu"></div>
+
+    <script>
+      // Extract location from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const locationId = urlParams.get('location');
+
+      // Mock data (temp)
+      const locations = [
+        { id: 'Gator-Corner-Dining-Center', name: 'Gator Corner Dining Center' },
+        { id: 'Broward-Dining', name: 'Broward Dining' },
+        { id: 'Chick-Fil-A', name: 'Chick-Fil-A', },
+      ];
+
+      // Retrieve location data (replace with call to backend)
+      const restaurant = locations.find(l => l.id === locationId);
+
+      // Generate HTML dynamically
+      const menuHtml = `
+        <div class="mt-3 mb-3">
+          <div class="container">
+            <h1 class="mt-4 text-center" id="menu-title">${restaurant.name}</h1>
+            <h3 class="text-center mb-4">Weekly Schedule</h2>
+          </div>
         </div>
-      </div>
+
         <div class="accordion" id="accordionExample">
+
           <div class="accordion-item border-0 custom-shadow">
             <h2 class="accordion-header">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -57,6 +78,7 @@
               </div>
             </div>
           </div>
+
           <div class="accordion-item border-0 custom-shadow">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -69,6 +91,7 @@
               </div>
             </div>
           </div>
+
           <div class="accordion-item border-0 custom-shadow">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -81,13 +104,13 @@
               </div>
             </div>
           </div>
+
         </div>
-    </div>
-    
-    
+      `;
 
+      document.querySelector('#menu').innerHTML = menuHtml;
 
-
+    </script>
 
 
     <!-- Bootstrap JS -->
