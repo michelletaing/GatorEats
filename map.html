@@ -26,6 +26,10 @@
         });
     </script>
     <script src="components/cards.js"></script>
+    <link rel="stylesheet" href="components/map extras/L.Control.Sidebar.css">
+    <script src="components/map extras/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="/components/map extras/Control.FullScreen.css" />
+    <script src="/components/map extras/Control.FullScreen.js"></script>
   </head>
 
   <body>
@@ -35,6 +39,8 @@
         <h1 class="mt-3 mb-3">Map</h1>
         <div class="mt-3 mb-3" id="map" style="height: 700px;"></div>
     </div>
+
+    <div id="sidebar"></div>
 
     <!-- Format popup modal -->
     <div class="modal fade" id="markerModal" tabindex="-1" aria-labelledby="markerModalLabel" aria-hidden="true">
@@ -61,7 +67,12 @@
 
     <script>
         // Initialize map
-        var map = L.map('map').setView([29.6463, -82.3478], 16);
+        var map = new L.Map('map', {
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            }
+        }).setView([29.6463, -82.3478], 16);
 
         // Load maps -- other maps can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/
         var CartoDB_VoyagerNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
@@ -87,6 +98,28 @@
             'Labels': CartoDB_VoyagerOnlyLabels
         }).addTo(map);
 
+        // Create Leaflet control for key
+        var sidebarControl = L.control({position: 'bottomleft'});
+        sidebarControl.onAdd = function(map) {
+            var button = L.DomUtil.create('button', 'sidebar-button btn btn-secondary');
+            button.innerHTML = '<i class="fas fa-bars"></i> Key';
+            button.onclick = function() {
+                sidebar.toggle();
+            };
+            return button;
+        };
+        sidebarControl.addTo(map);
+
+        // Format key
+        var sidebarContent = '<h2 class="sidebar-title">Key</h2>';
+
+        // Initialize the Leaflet Sidebar plugin and add it to the map
+        var sidebar = L.control.sidebar('sidebar', {
+            position: 'left'
+        }).addTo(map);
+        sidebar.setContent(sidebarContent);
+        L.DomUtil.addClass(sidebar.getContainer(), 'sidebar-container');
+
         // Open popup modal when a marker is clicked
         function openMarkerModal(markerTitle, location) {
             var modal = new bootstrap.Modal(document.getElementById('markerModal'), {
@@ -103,70 +136,103 @@
         /* Notes:
             - Graham, Beaty, Little Hall, and Harn curently excluded -- food data is not present on Dine on Campus
             - Location data may have to be manually modified on backend due to inconsistencies on Dine on Campus */
-        L.marker([29.638531773297153, -82.36824877685449]).addTo(map)
+        var marker1 = L.marker([29.638531773297153, -82.36824877685449]).addTo(map)
         .on('click', function() {
             openMarkerModal("Southwest Recreation Center", "Southwest Recreation Center");
         });
     
-        L.marker([29.649490931415606, -82.35904405713241]).addTo(map)
+        var marker2 = L.marker([29.649490931415606, -82.35904405713241]).addTo(map)
         .on('click', function() {
             openMarkerModal("Levin College of Law", "Levin Law");
         });
 
-        L.marker([29.64802197734256, -82.35007793206672]).addTo(map)
+        var marker3 = L.marker([29.64802197734256, -82.35007793206672]).addTo(map)
         .on('click', function() {
             openMarkerModal("Gator Corner Dining Center", "Gator Corner");
         });
 
-        L.marker([29.646364274528647, -82.3477643199959]).addTo(map)
+        var marker4 = L.marker([29.646364274528647, -82.3477643199959]).addTo(map)
         .on('click', function() {
             openMarkerModal("Reitz Union", "Reitz Union");
         });
 
-        L.marker([29.6470013707062, -82.34130057318637]).addTo(map)
+        var marker5 = L.marker([29.6470013707062, -82.34130057318637]).addTo(map)
         .on('click', function() {
             openMarkerModal("Broward Dining ", "Broward Hall");
         });
 
-        L.marker([29.648177903466213, -82.34552207762731]).addTo(map)
+        var marker6 = L.marker([29.648177903466213, -82.34552207762731]).addTo(map)
         .on('click', function() {
             openMarkerModal("The Hub", "The Hub");
         });
 
-        L.marker([29.649101626325493, -82.34505776974727]).addTo(map)
+        var marker7 = L.marker([29.649101626325493, -82.34505776974727]).addTo(map)
         .on('click', function() {
             openMarkerModal("Newell Hall", "Newell Hall");
         });
 
-        L.marker([29.64872043094608, -82.34452127134229]).addTo(map)
+        var marker8 = L.marker([29.64872043094608, -82.34452127134229]).addTo(map)
         .on('click', function() {
             openMarkerModal("Turlington Plaza", "Turlington Plaza");
         });
 
-        L.marker([29.648085853704796, -82.34384642078679]).addTo(map)
+        var marker9 = L.marker([29.648085853704796, -82.34384642078679]).addTo(map)
         .on('click', function() {
             openMarkerModal("Marston Science Library", "Marston Library");
         });
 
-        L.marker([29.6512680840507, -82.34290443289392]).addTo(map)
+        var marker10 = L.marker([29.6512680840507, -82.34290443289392]).addTo(map)
         .on('click', function() {
             openMarkerModal("Library West", "Library West");
         });
 
-        L.marker([29.64625374767942, -82.34294851018656]).addTo(map)
+        var marker11 = L.marker([29.64625374767942, -82.34294851018656]).addTo(map)
         .on('click', function() {
             openMarkerModal("Rawlings Hall", "Rawlings");
         });
 
-        L.marker([29.639944711575975, -82.3427951651843]).addTo(map)
+        var marker12 = L.marker([29.639944711575975, -82.3427951651843]).addTo(map)
         .on('click', function() {
             openMarkerModal("Shands Hospital", "Shands");
         });
 
-        L.marker([29.633291211911466, -82.34971217697066]).addTo(map)
+        var marker13 = L.marker([29.633291211911466, -82.34971217697066]).addTo(map)
         .on('click', function() {
             openMarkerModal("College of Veterinary Medicine", "College of Veterinary Medicine");
         });
+
+
+        // temp names
+        var markerArray = [marker1, marker2, marker3, marker4, marker5, marker6, marker7, marker8, marker9, marker10, marker11, marker12, marker13];
+
+        // Add markers to side bar key
+        var markerListContainer = L.DomUtil.create('div', 'marker-list-container', sidebar.getContainer());
+        var markerList = document.createElement('ul');
+        markerList.classList.add('list-group');
+
+        for (var i = 0; i < markerArray.length; i++) {
+            var markerListItem = document.createElement('li');
+            markerListItem.innerHTML = 'Marker ' + (i+1); // temp
+            markerListItem.classList.add('list-group-item');
+            markerListItem.setAttribute('data-marker-index', i);
+
+            // Set view on click
+            markerListItem.addEventListener('click', function() {
+                var markerIndex = parseInt(this.getAttribute('data-marker-index'));
+                var marker = markerArray[markerIndex];
+
+                var zoomRatio = Math.pow(2, 18 - map.getZoom());
+                var markerPoint = map.latLngToContainerPoint(marker.getLatLng());
+                var offsetLng = map.containerPointToLatLng([markerPoint.x - (130 / zoomRatio), markerPoint.y]).lng;
+                map.setView([marker.getLatLng().lat, offsetLng], 18);
+            });
+
+            markerListItem.style.border = "none";
+            markerList.appendChild(markerListItem);
+        }
+
+        markerListContainer.innerHTML += '<style>.list-group-item:hover {cursor: pointer;}</style>';
+        markerListContainer.appendChild(markerList);
 
     </script>
     
