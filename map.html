@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gator Eats</title>
+    <script src="https://kit.fontawesome.com/0e409249cc.js" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Syne&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+    <!-- Global CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <!-- Load components -->
+    <script>
+        $(function() {
+          $('#navbar').load('components/navbar.html');
+        });
+    </script>
+    <script src="components/cards.js"></script>
+  </head>
+
+  <body>
+    <div id="navbar"></div>
+    
+    <div class="container">
+        <h1 class="mt-3 mb-3">Map</h1>
+        <div class="mt-3 mb-3" id="map" style="height: 700px;"></div>
+    </div>
+
+    <!-- Format popup modal -->
+    <div class="modal fade" id="markerModal" tabindex="-1" aria-labelledby="markerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="markerModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-container row row-cols-1 g-4"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+      
+
+    <script>
+        // Initialize map
+        var map = L.map('map').setView([29.6463, -82.3478], 16);
+
+        // Load maps -- other maps can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/
+        var CartoDB_VoyagerNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+        var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        });
+
+        // Select map
+        var layerControl = L.control.layers({
+            "Unlabeled": CartoDB_VoyagerNoLabels,
+            "Labeled": CartoDB_Voyager
+        }).addTo(map);
+
+        // Open popup modal when a marker is clicked
+        function openMarkerModal(markerTitle, location) {
+            var modal = new bootstrap.Modal(document.getElementById('markerModal'), {
+                keyboard: false
+            });
+
+            document.getElementById('markerModalLabel').innerText = markerTitle;
+            createCards($('.card-container'), location);
+            
+            modal.show();
+        }
+
+        // Create markers
+        /* Notes:
+            - Graham, Beaty, Little Hall, and Harn curently excluded -- food data is not present on Dine on Campus
+            - Location data may have to be manually modified on backend due to inconsistencies on Dine on Campus */
+        L.marker([29.638531773297153, -82.36824877685449]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Southwest Recreation Center", "Southwest Recreation Center");
+        });
+    
+        L.marker([29.649490931415606, -82.35904405713241]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Levin College of Law", "Levin Law");
+        });
+
+        L.marker([29.64802197734256, -82.35007793206672]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Gator Corner Dining Center", "Gator Corner");
+        });
+
+        L.marker([29.646364274528647, -82.3477643199959]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Reitz Union", "Reitz Union");
+        });
+
+        L.marker([29.6470013707062, -82.34130057318637]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Broward Dining ", "Broward Hall");
+        });
+
+        L.marker([29.648177903466213, -82.34552207762731]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("The Hub", "The Hub");
+        });
+
+        L.marker([29.649101626325493, -82.34505776974727]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Newell Hall", "Newell Hall");
+        });
+
+        L.marker([29.64872043094608, -82.34452127134229]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Turlington Plaza", "Turlington Plaza");
+        });
+
+        L.marker([29.648085853704796, -82.34384642078679]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Marston Science Library", "Marston Library");
+        });
+
+        L.marker([29.6512680840507, -82.34290443289392]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Library West", "Library West");
+        });
+
+        L.marker([29.64625374767942, -82.34294851018656]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Rawlings Hall", "Rawlings");
+        });
+
+        L.marker([29.639944711575975, -82.3427951651843]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("Shands Hospital", "Shands");
+        });
+
+        L.marker([29.633291211911466, -82.34971217697066]).addTo(map)
+        .on('click', function() {
+            openMarkerModal("College of Veterinary Medicine", "College of Veterinary Medicine");
+        });
+
+    </script>
+    
+  </body>
+</html>

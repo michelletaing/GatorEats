@@ -1,0 +1,29 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #efeee8;
+}
+
+.title {
+    font-family: 'Syne', sans-serif;
+}
+
+.card-container a {
+    text-decoration: none;
+}
+
+.custom-shadow {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.blue {
+    background-color:rgba(3, 71, 138, 0.2)
+}
+
+.subtitle {
+    color:rgb(124, 124, 124);
+    font-weight:300;
+}
+
+.modal-backdrop {
+    opacity:0.25 !important;
+}
