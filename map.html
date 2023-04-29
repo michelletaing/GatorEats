@@ -128,7 +128,8 @@
 
             document.getElementById('markerModalLabel').innerText = markerTitle;
             createCards($('.card-container'), location);
-            
+
+            document.getElementById('sidebar').appendChild(modal._element);
             modal.show();
         }
 
