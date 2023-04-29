@@ -26,10 +26,11 @@
         });
     </script>
     <script src="components/cards.js"></script>
-    <link rel="stylesheet" href="components/map extras/L.Control.Sidebar.css">
-    <script src="components/map extras/L.Control.Sidebar.js"></script>
-    <link rel="stylesheet" href="components/map extras/Control.FullScreen.css" />
-    <script src="components/map extras/Control.FullScreen.js"></script>
+    <link rel="stylesheet" href="components/map/L.Control.Sidebar.css">
+    <script src="components/map/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="components/map/Control.FullScreen.css" />
+    <script src="components/map/Control.FullScreen.js"></script>
+
   </head>
 
   <body>
@@ -38,9 +39,8 @@
     <div class="container">
         <h1 class="mt-3 mb-3">Map</h1>
         <div class="mt-3 mb-3" id="map" style="height: 700px;"></div>
+        <div id="sidebar"></div>
     </div>
-
-    <div id="sidebar"></div>
 
     <!-- Format popup modal -->
     <div class="modal fade" id="markerModal" tabindex="-1" aria-labelledby="markerModalLabel" aria-hidden="true">
@@ -122,14 +122,16 @@
 
         // Open popup modal when a marker is clicked
         function openMarkerModal(markerTitle, location) {
-            var modal = new bootstrap.Modal(document.getElementById('markerModal'), {
-                keyboard: false
-            });
+            var modal = new bootstrap.Modal($('#markerModal'));
 
-            document.getElementById('markerModalLabel').innerText = markerTitle;
+            $('#markerModalLabel').text(markerTitle);
             createCards($('.card-container'), location);
 
-            document.getElementById('sidebar').appendChild(modal._element);
+            if (document.fullscreenElement)
+                $('#sidebar').append(modal._element);
+            else
+                $('#sidebar').find('.modal').remove();
+
             modal.show();
         }
 
