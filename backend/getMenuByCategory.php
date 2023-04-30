@@ -7,7 +7,7 @@
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    // Retrieve items from the database based on the category and restaurant ID
+    // Retrieve items from the database based on the category (breakfast, lunch, or dinner) and restaurant ID
     $category = $_GET['category'];
     $restaurantID = $_GET['restaurantID'];
     $sql = "SELECT * FROM items WHERE category='$category' AND restaurantID='$restaurantID'";
