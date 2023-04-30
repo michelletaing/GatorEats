@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,15 +25,20 @@
           $('#navbar').load('components/navbar.html');
         });
     </script>
-    <script src="components/cards.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/map.js"></script>
+    <link rel="stylesheet" href="components/map/L.Control.Sidebar.css">
+    <script src="components/map/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="components/map/Control.FullScreen.css" />
+    <script src="components/map/Control.FullScreen.js"></script>
   </head>
-
   <body>
     <div id="navbar"></div>
     
     <div class="container">
         <h1 class="mt-3 mb-3">Map</h1>
-        <div class="mt-3 mb-3" id="map" style="height: 700px;"></div>
+        <div class="mt-3 mb-3" id="map" style="height: 80vh;"></div>
+        <div id="sidebar"></div>
     </div>
 
     <!-- Format popup modal -->
@@ -58,110 +63,8 @@
         </div>
     </div>
       
-
     <script>
-        // Initialize map
-        var map = L.map('map').setView([29.6463, -82.3478], 16);
-
-        // Load maps -- other maps can be found here: https://leaflet-extras.github.io/leaflet-providers/preview/
-        var CartoDB_VoyagerNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }).addTo(map);
-        var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        });
-
-        // Select map
-        var layerControl = L.control.layers({
-            "Unlabeled": CartoDB_VoyagerNoLabels,
-            "Labeled": CartoDB_Voyager
-        }).addTo(map);
-
-        // Open popup modal when a marker is clicked
-        function openMarkerModal(markerTitle, location) {
-            var modal = new bootstrap.Modal(document.getElementById('markerModal'), {
-                keyboard: false
-            });
-
-            document.getElementById('markerModalLabel').innerText = markerTitle;
-            createCards($('.card-container'), location);
-            
-            modal.show();
-        }
-
-        // Create markers
-        /* Notes:
-            - Graham, Beaty, Little Hall, and Harn curently excluded -- food data is not present on Dine on Campus
-            - Location data may have to be manually modified on backend due to inconsistencies on Dine on Campus */
-        L.marker([29.638531773297153, -82.36824877685449]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Southwest Recreation Center", "Southwest Recreation Center");
-        });
-    
-        L.marker([29.649490931415606, -82.35904405713241]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Levin College of Law", "Levin Law");
-        });
-
-        L.marker([29.64802197734256, -82.35007793206672]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Gator Corner Dining Center", "Gator Corner");
-        });
-
-        L.marker([29.646364274528647, -82.3477643199959]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Reitz Union", "Reitz Union");
-        });
-
-        L.marker([29.6470013707062, -82.34130057318637]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Broward Dining ", "Broward Hall");
-        });
-
-        L.marker([29.648177903466213, -82.34552207762731]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("The Hub", "The Hub");
-        });
-
-        L.marker([29.649101626325493, -82.34505776974727]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Newell Hall", "Newell Hall");
-        });
-
-        L.marker([29.64872043094608, -82.34452127134229]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Turlington Plaza", "Turlington Plaza");
-        });
-
-        L.marker([29.648085853704796, -82.34384642078679]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Marston Science Library", "Marston Library");
-        });
-
-        L.marker([29.6512680840507, -82.34290443289392]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Library West", "Library West");
-        });
-
-        L.marker([29.64625374767942, -82.34294851018656]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Rawlings Hall", "Rawlings");
-        });
-
-        L.marker([29.639944711575975, -82.3427951651843]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("Shands Hospital", "Shands");
-        });
-
-        L.marker([29.633291211911466, -82.34971217697066]).addTo(map)
-        .on('click', function() {
-            openMarkerModal("College of Veterinary Medicine", "College of Veterinary Medicine");
-        });
-
+        createMap();
     </script>
     
   </body>

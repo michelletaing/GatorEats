@@ -14,7 +14,7 @@ function createCards(container, location) {
 
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getRestaurants.php',
+        url: 'backend/getRestaurants.php',
         success: function(data) {
             diningLocations = data;
 

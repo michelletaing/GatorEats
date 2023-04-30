@@ -2,7 +2,7 @@ function getRestaurant(restaurantID) {
     // Retrieve location data using locationId
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getRestaurant.php',
+        url: 'backend/getRestaurant.php',
         data: {id: restaurantID},
         success: function(data) {
         const restaurant = data;
@@ -45,7 +45,7 @@ function getRestaurant(restaurantID) {
                 
             </div>
 
-            <div id="lunch>
+            <div id="lunch">
             <div class="accordion-item border-0 custom-shadow">
                 <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -96,7 +96,7 @@ function getRestaurant(restaurantID) {
             </div>
         `;
 
-        document.querySelector('#menu').innerHTML = menuHtml;
+        $('#menu').html(menuHtml);
 
         getMenu(restaurantID);
 
@@ -116,7 +116,7 @@ function getMenu(restaurantID) {
 function getBreakFast(restaurantID) {
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByCategory.php',
+        url: 'backend/getMenuByCategory.php',
         data: {restaurantID: restaurantID, category: 'Breakfast'},
         success: function(items) {
             console.log(items);
