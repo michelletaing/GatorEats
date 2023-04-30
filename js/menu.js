@@ -2,7 +2,7 @@ function getRestaurant(restaurantID) {
     // Retrieve location data using locationId
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getRestaurant.php',
+        url: 'backend/getRestaurant.php',
         data: {id: restaurantID},
         success: function(data) {
         const restaurant = data;
@@ -105,7 +105,7 @@ function getRestaurant(restaurantID) {
             </div>
         `;
 
-        document.querySelector('#menu').innerHTML = menuHtml;
+        $('#menu').html(menuHtml);
 
         getMenu(restaurantID);
 
