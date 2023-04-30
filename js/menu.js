@@ -37,44 +37,53 @@ function getRestaurant(restaurantID) {
             </ul>
             </div>
 
-            <!-- Accordian -->
-            <div class="accordion" id="accordionExample">
+            <!-- Accordion -->
+            <div class="accordion mb-3" id="accordionExample">
 
-            <!-- Breakfast Information -->
-            <div id="breakfast">
+                <div class="accordion-item border-0 custom-shadow">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#breakfast" aria-expanded="true" aria-controls="breakfast">
+                        <h1 class="mb-0 title">Breakfast</h1>
+                      </button>
+                    </h2>
+                    <div id="breakfast" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="Breakfast-details">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-            </div>
+                <div class="accordion-item border-0 custom-shadow">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lunch" aria-expanded="true" aria-controls="lunch">
+                        <h1 class="mb-0 title">Lunch</h1>
+                      </button>
+                    </h2>
+                    <div id="lunch" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="Lunch-details">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div id="lunch>
-            <div class="accordion-item border-0 custom-shadow">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <h1 class="mb-0 title">Lunch</h1>
-                </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                <div class="accordion-item border-0 custom-shadow">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dinner" aria-expanded="true" aria-controls="dinner">
+                        <h1 class="mb-0 title">Dinner</h1>
+                      </button>
+                    </h2>
+                    <div id="dinner" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="Dinner-details">
+                            
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-            </div>
-
-            <div id="dinner">
-            <div class="accordion-item border-0 custom-shadow">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <h1 class="mb-0 title">Dinner</h1>
-                </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-                </div>
-            </div>
-            </div>
-
             </div>
 
             <!-- Modal -->
@@ -107,67 +116,71 @@ function getRestaurant(restaurantID) {
     });
 }
 
-function getMenu(restaurantID) {
-    getBreakFast(restaurantID);
-    // getLunch();
-    // getDinner();
+async function getMenu(restaurantID) {
+    // Await all functions to ensure they execute one at a time
+    await getMenuDetails(restaurantID, 'Breakfast');
+    await getMenuDetails(restaurantID, 'Lunch');
+    await getMenuDetails(restaurantID, 'Dinner');
 }
 
-function getBreakFast(restaurantID) {
+async function getMenuDetails(restaurantID, category) {
+    // Get all the meal types (The Kitchen, Gator Fire Grill, etc.)
+    mealTypes = await getMealTypes(restaurantID, category);
+    console.log(mealTypes)
+
     $.ajax({
         type: 'GET',
         url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByCategory.php',
-        data: {restaurantID: restaurantID, category: 'Breakfast'},
+        data: {restaurantID: restaurantID, category: category},
         success: function(items) {
             console.log(items);
 
-            const accordionHTML = `
-            <div class="accordion-item border-0 custom-shadow">
-                <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h1 class="mb-0 title">Breakfast</h1>
-                </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table class="table table-hover table-borderless">
+            mealTypes.forEach(mealType => {
+                const filteredItems = items.filter(item => item.mealType === mealType);
+              
+                const accordionHTML = `
+                <table class="table table-hover table-borderless">
                     <thead>
                         <tr>
-                        <th scope="col"><h4>THE KITCHEN</h4></th>
+                            <th scope="col"><h4>${mealType}</h4></th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${items.map(item => `
-                            <tr>
-                                <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal">
-                                    <p class="mb-0">${item.name}</p>
-                                    <p class="subtitle mb-0"><em>${item.details}</em></p>
-                                </td>
-                            </tr>
-                        `).join('')}
+                    ${filteredItems.map(item => `
+                        <tr>
+                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal">
+                            <p class="mb-0">${item.name}</p>
+                            <p class="subtitle mb-0"><em>${item.details}</em></p>
+                        </td>
+                        </tr>
+                    `).join('')}
                     </tbody>
-                    </table>
-                </div>
-                </div>
-            </div>
-            `;
-
-            // Append HTML
-            $('#breakfast').append(accordionHTML);
-
+                </table>
+                `;
+              
+                $(`#${category}-details`).append(accordionHTML);
+              });
         },
         error: function(xhr, status, error) {
             console.error(error);
         }
-        
-
     });
 }
 
-function getLunch() {
-
-}
-
-function getDinner() {
-
+function getMealTypes(restaurantID, category) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: 'GET',
+        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByMealType.php',
+        data: { restaurantID: restaurantID, category: category },
+        success: function (mealTypes) {
+          console.log(mealTypes);
+          resolve(mealTypes);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+          reject(error);
+        }
+      });
+    });
 }
