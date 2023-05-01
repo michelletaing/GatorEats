@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 <?php
-    $conn = new mysqli("mysql.cise.ufl.edu", "michelletaing", "6aXgNsQxTwz5CSt", "gator_eats_test");
+    require_once('config/config.php');
+    $conn = new mysqli($host, $username, $password, $database);
 
     // Check connection
     if (!$conn) {
@@ -10,7 +11,7 @@
     // Retrieve items from the database based on the category (breakfast, lunch, or dinner) and restaurant ID
     $category = $_GET['category'];
     $restaurantID = $_GET['restaurantID'];
-    $sql = "SELECT * FROM items WHERE category='$category' AND restaurantID='$restaurantID'";
+    $sql = "SELECT * FROM items WHERE category='$category' AND restaurantID=$restaurantID";
     $result = mysqli_query($conn, $sql);
 
     // Convert the result to an array

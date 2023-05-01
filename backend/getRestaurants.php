@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 <?php 
-     $conn = new mysqli("mysql.cise.ufl.edu", "michelletaing", "6aXgNsQxTwz5CSt", "gator_eats_test");
+     require_once('config/config.php');
+     $conn = new mysqli($host, $username, $password, $database);
 
      // Check for errors
      if ($conn->connect_error) {
