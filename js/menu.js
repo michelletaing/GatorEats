@@ -66,11 +66,11 @@ function getRestaurant(restaurantID) {
                 
                 <div class="accordion-item border-0 custom-shadow">
                     <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lunch" aria-expanded="true" aria-controls="lunch">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lunch" aria-expanded="false" aria-controls="lunch">
                         <h1 class="mb-0 title">Lunch</h1>
                       </button>
                     </h2>
-                    <div id="lunch" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div id="lunch" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div id="Lunch-details">
                             
@@ -81,11 +81,11 @@ function getRestaurant(restaurantID) {
 
                 <div class="accordion-item border-0 custom-shadow">
                     <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dinner" aria-expanded="true" aria-controls="dinner">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dinner" aria-expanded="false" aria-controls="dinner">
                         <h1 class="mb-0 title">Dinner</h1>
                       </button>
                     </h2>
-                    <div id="dinner" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div id="dinner" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div id="Dinner-details">
                             
@@ -109,6 +109,7 @@ function getRestaurant(restaurantID) {
 
         $('#menu').html(menuHtml);
 
+        // Display restaurant-specific menu
         getMenu(restaurantID);
 
         },
@@ -137,6 +138,7 @@ async function getMenuDetails(restaurantID, category) {
         success: function(items) {
             console.log(items);
 
+            // Display the menu in order of the meal types
             mealTypes.forEach(mealType => {
                 const filteredItems = items.filter(item => item.mealType === mealType);
               
@@ -188,8 +190,10 @@ function getMealTypes(restaurantID, category) {
 }
 
 function getMenuItemDetails(itemID) {
+    // Clear the item-details modal that was previously rendered
     $('#item-details').empty();
 
+    // Mock data to be replaced by backend call
     mockItemDetails = [
         { itemID: 1, description: 'this is a list of mock ingredients for the french toasted waffle' },
         { itemID: 2, description: 'this is a list of mock ingredients for the egg whites' },
