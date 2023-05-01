@@ -3,7 +3,8 @@ $(document).ready(function() {
     // that will dynamically generate the modal.
     $('#menu').on('click', '.menu-item', function() {
         itemID = $(this).data('itemid');
-        getMenuItemDetails(itemID);
+        itemName = $(this).data('itemname');
+        getMenuItemDetails(itemID, itemName);
     });    
 });
 
@@ -133,7 +134,7 @@ async function getMenuDetails(restaurantID, category) {
 
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByCategory.php',
+        url: 'backend/getMenuByCategory.php',
         data: {restaurantID: restaurantID, category: category},
         success: function(items) {
             console.log(items);
@@ -152,7 +153,7 @@ async function getMenuDetails(restaurantID, category) {
                     <tbody>
                     ${filteredItems.map(item => `
                         <tr>
-                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}">
+                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}" data-itemname="${item.name}">
                             <p class="mb-0">${item.name}</p>
                             <p class="subtitle mb-0"><em>${item.details}</em></p>
                         </td>
@@ -175,7 +176,7 @@ function getMealTypes(restaurantID, category) {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByMealType.php',
+        url: 'backend/getMenuByMealType.php',
         data: { restaurantID: restaurantID, category: category },
         success: function (mealTypes) {
           console.log(mealTypes);
@@ -189,28 +190,77 @@ function getMealTypes(restaurantID, category) {
     });
 }
 
-function getMenuItemDetails(itemID) {
+function getMenuItemDetails(itemID, itemName) {
     // Clear the item-details modal that was previously rendered
     $('#item-details').empty();
 
     // Mock data to be replaced by backend call
     mockItemDetails = [
-        { itemID: 1, description: 'this is a list of mock ingredients for the french toasted waffle' },
-        { itemID: 2, description: 'this is a list of mock ingredients for the egg whites' },
-        { itemID: 3, description: 'this is a list of mock ingredients for the cheese omelet' },
-        { itemID: 4, description: 'this is a list of mock ingredients for the baked potatoes' }
+        {
+            itemID: 1,
+            nutrition: {
+                Calories: 320,
+                Protein: 6,
+                Carbohydrates: 55
+            },
+            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
+            diet: ['Vegetarian']
+        },
+        {
+            itemID: 2,
+            nutrition: {
+                Calories: 320,
+                Protein: 6,
+                Carbohydrates: 55
+            },
+            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
+            diet: ['Vegetarian']
+        },
+        {
+            itemID: 3,
+            nutrition: {
+                Calories: 320,
+                Protein: 6,
+                Carbohydrates: 55
+            },
+            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
+            diet: ['Vegetarian']
+        },
+        {
+            itemID: 4,
+            nutrition: {
+                Calories: 320,
+                Protein: 6,
+                Carbohydrates: 55
+            },
+            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
+            diet: ['Vegetarian']
+        }
     ];
-
+    
     const selectedItem = mockItemDetails.find(item => item.itemID === itemID);
 
     const modalHTML = `
     <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">${selectedItem.itemID}</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">${itemName}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            ${selectedItem.description}
+            <h3>Nutritional Info</h3>
+            <ul>
+                ${Object.keys(selectedItem.nutrition).map((key) => {
+                    return `<li>${key}: ${selectedItem.nutrition[key]}</li>`
+                }).join('')}
+            </ul>
+
+            <h3>Ingredients</h3>
+            <p>${selectedItem.ingredients}</p>
+            
+            <h3>Dietary Preferences</h3>
+            <ul>
+                ${selectedItem.diet.map((preference) => `<li>${preference}</li>`).join('')}
+            </ul>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
