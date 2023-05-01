@@ -1,3 +1,12 @@
+$(document).ready(function() {
+    // When a menu item is clicked, this triggers a function
+    // that will dynamically generate the modal.
+    $('#menu').on('click', '.menu-item', function() {
+        itemID = $(this).data('itemid');
+        getMenuItemDetails(itemID);
+    });    
+});
+
 function getRestaurant(restaurantID) {
     // Retrieve location data using locationId
     $.ajax({
@@ -89,16 +98,9 @@ function getRestaurant(restaurantID) {
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
+                <div id="item-details">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Specific Menu Name Goes Here</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Ingredients/nutritional facts go here
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    
                 </div>
                 </div>
             </div>
@@ -148,7 +150,7 @@ async function getMenuDetails(restaurantID, category) {
                     <tbody>
                     ${filteredItems.map(item => `
                         <tr>
-                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal">
+                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}">
                             <p class="mb-0">${item.name}</p>
                             <p class="subtitle mb-0"><em>${item.details}</em></p>
                         </td>
@@ -183,4 +185,35 @@ function getMealTypes(restaurantID, category) {
         }
       });
     });
+}
+
+function getMenuItemDetails(itemID) {
+    $('#item-details').empty();
+
+    mockItemDetails = [
+        { itemID: 1, description: 'this is a list of mock ingredients for the french toasted waffle' },
+        { itemID: 2, description: 'this is a list of mock ingredients for the egg whites' },
+        { itemID: 3, description: 'this is a list of mock ingredients for the cheese omelet' },
+        { itemID: 4, description: 'this is a list of mock ingredients for the baked potatoes' }
+    ];
+
+    const selectedItem = mockItemDetails.find(item => item.itemID === itemID);
+
+    const modalHTML = `
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">${selectedItem.itemID}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ${selectedItem.description}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+    `;
+        
+    $('#item-details').append(modalHTML);
+
 }
