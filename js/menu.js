@@ -50,50 +50,10 @@ function getRestaurant(restaurantID) {
             <!-- Accordion -->
             <div class="accordion mb-3" id="accordionExample">
 
-                <div class="accordion-item border-0 custom-shadow">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#breakfast" aria-expanded="true" aria-controls="breakfast">
-                        <h1 class="mb-0 title">Breakfast</h1>
-                      </button>
-                    </h2>
-                    <div id="breakfast" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <div id="Breakfast-details">
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="accordion-item border-0 custom-shadow">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lunch" aria-expanded="false" aria-controls="lunch">
-                        <h1 class="mb-0 title">Lunch</h1>
-                      </button>
-                    </h2>
-                    <div id="lunch" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <div id="Lunch-details">
-                            
-                            </div>
-                        </div>
-                    </div>
+                <div id="accordionHTML">
+
                 </div>
 
-                <div class="accordion-item border-0 custom-shadow">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dinner" aria-expanded="false" aria-controls="dinner">
-                        <h1 class="mb-0 title">Dinner</h1>
-                      </button>
-                    </h2>
-                    <div id="dinner" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <div id="Dinner-details">
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Modal -->
@@ -111,7 +71,7 @@ function getRestaurant(restaurantID) {
         $('#menu').html(menuHtml);
 
         // Display restaurant-specific menu
-        getMenu(restaurantID);
+        getMenu(restaurantID, restaurant.categories);
 
         },
         error: function(xhr, status, error) {
@@ -120,11 +80,13 @@ function getRestaurant(restaurantID) {
     });
 }
 
-async function getMenu(restaurantID) {
-    // Await all functions to ensure they execute one at a time
-    await getMenuDetails(restaurantID, 'Breakfast');
-    await getMenuDetails(restaurantID, 'Lunch');
-    await getMenuDetails(restaurantID, 'Dinner');
+async function getMenu(restaurantID, categories) {
+    const categoriesArray = categories.split(",");
+    console.log(categoriesArray);
+
+    for (const category of categoriesArray) {
+        await getMenuDetails(restaurantID, category);
+    }
 }
 
 async function getMenuDetails(restaurantID, category) {
@@ -139,32 +101,44 @@ async function getMenuDetails(restaurantID, category) {
         success: function(items) {
             console.log(items);
 
-            // Display the menu in order of the meal types
-            mealTypes.forEach(mealType => {
-                const filteredItems = items.filter(item => item.mealType === mealType);
-              
-                const accordionHTML = `
-                <table class="table table-hover table-borderless">
-                    <thead>
-                        <tr>
-                            <th scope="col"><h4>${mealType}</h4></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    ${filteredItems.map(item => `
-                        <tr>
-                        <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}" data-itemname="${item.name}">
-                            <p class="mb-0">${item.name}</p>
-                            <p class="subtitle mb-0"><em>${item.details}</em></p>
-                        </td>
-                        </tr>
-                    `).join('')}
-                    </tbody>
-                </table>
-                `;
-              
-                $(`#${category}-details`).append(accordionHTML);
-              });
+            const accordionHTML = `
+            <div class="accordion-item border-0 custom-shadow">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
+                    <h1 class="mb-0 title">${category}</h1>
+                    </button>
+                </h2>
+                <div id="${category}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        ${mealTypes.map(mealType => {
+                            const filteredItems = items.filter(item => item.mealType === mealType);
+                            return `
+                            <table class="table table-hover table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><h4>${mealType}</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                ${filteredItems.map(item => `
+                                    <tr>
+                                    <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}" data-itemname="${item.name}">
+                                        <p class="mb-0">${item.name}</p>
+                                        <p class="subtitle mb-0"><em>${item.details}</em></p>
+                                    </td>
+                                    </tr>
+                                `).join('')}
+                                </tbody>
+                            </table>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+            `;
+
+            $('#accordionHTML').append(accordionHTML);
+            
         },
         error: function(xhr, status, error) {
             console.error(error);
