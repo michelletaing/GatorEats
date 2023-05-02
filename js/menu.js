@@ -133,7 +133,7 @@ async function getMenuDetails(restaurantID, category) {
 
     $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByCategory.php',
+        url: 'backend/getMenuByCategory.php',
         data: {restaurantID: restaurantID, category: category},
         success: function(items) {
             console.log(items);
@@ -175,7 +175,7 @@ function getMealTypes(restaurantID, category) {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        url: 'https://cise.ufl.edu/~michelletaing/cis4930/gator-eats/backend/getMenuByMealType.php',
+        url: 'backend/getMenuByMealType.php',
         data: { restaurantID: restaurantID, category: category },
         success: function (mealTypes) {
           console.log(mealTypes);
