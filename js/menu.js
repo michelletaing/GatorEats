@@ -127,7 +127,7 @@ async function getMenu(restaurantID) {
 
     if (currentHour >= 11 && currentHour < 15) // 11am – 3pm
         category = 'lunch';
-    else if (currentHour >= 15 && currentHour < 23) // 3pm - 11 pm
+    else if (currentHour >= 15 && currentHour < 23) // 3pm - 11pm
         category = 'dinner';
     else
         category = 'breakfast';
