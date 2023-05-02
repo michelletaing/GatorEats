@@ -51,11 +51,11 @@ function getRestaurant(restaurantID) {
 
                 <div class="accordion-item border-0 custom-shadow">
                     <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#breakfast" aria-expanded="true" aria-controls="breakfast">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#breakfast" aria-expanded="false" aria-controls="breakfast">
                         <h1 class="mb-0 title">Breakfast</h1>
                       </button>
                     </h2>
-                    <div id="breakfast" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div id="breakfast" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div id="Breakfast-details">
                             
@@ -120,6 +120,20 @@ function getRestaurant(restaurantID) {
 }
 
 async function getMenu(restaurantID) {
+    // Get current time and open the corresponding category accordion
+    const today = new Date();
+    const currentHour = today.getHours();
+    let category;
+
+    if (currentHour >= 11 && currentHour < 15) // 11am – 3pm
+        category = 'lunch';
+    else if (currentHour >= 15 && currentHour < 23) // 3pm - 11 pm
+        category = 'dinner';
+    else
+        category = 'breakfast';
+    
+    $(`#${category}`).collapse('show');
+
     // Await all functions to ensure they execute one at a time
     await getMenuDetails(restaurantID, 'Breakfast');
     await getMenuDetails(restaurantID, 'Lunch');
