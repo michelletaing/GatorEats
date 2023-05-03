@@ -64,19 +64,19 @@ function createMap() {
         .appendTo($('<div>').addClass('marker-list-container').appendTo(sidebar.getContainer()));
     $('<style>').html('.list-group-item:hover {cursor: pointer;}').appendTo($markerList.parent());
 
-    createMarker("Southwest Recreation Center", "Southwest Recreation Center", 29.638531773297153, -82.36824877685449, map, $markerList);
-    createMarker("Levin College of Law", "Levin Law", 29.649490931415606, -82.35904405713241, map, $markerList);
-    createMarker("Gator Corner Dining Center", "Gator Corner", 29.64802197734256, -82.35007793206672, map, $markerList);
-    createMarker("Reitz Union", "Reitz Union", 29.646364274528647, -82.3477643199959, map, $markerList);
     createMarker("Broward Dining ", "Broward Hall", 29.6470013707062, -82.34130057318637, map, $markerList);
-    createMarker("The Hub", "The Hub", 29.648177903466213, -82.34552207762731, map, $markerList);
-    createMarker("Newell Hall", "Newell Hall", 29.649101626325493, -82.34505776974727, map, $markerList);
-    createMarker("Turlington Plaza", "Turlington Plaza", 29.64872043094608, -82.34452127134229, map, $markerList);
-    createMarker("Marston Science Library", "Marston Library", 29.648085853704796, -82.34384642078679, map, $markerList);
-    createMarker("Library West", "Library West", 29.6512680840507, -82.34290443289392, map, $markerList);
-    createMarker("Rawlings Hall", "Rawlings", 29.64625374767942, -82.34294851018656, map, $markerList);
-    createMarker("Shands Hospital", "Shands", 29.639944711575975, -82.3427951651843, map, $markerList);
     createMarker("College of Veterinary Medicine", "College of Veterinary Medicine", 29.633291211911466, -82.34971217697066, map, $markerList);
+    createMarker("Gator Corner Dining Center", "Gator Corner", 29.64802197734256, -82.35007793206672, map, $markerList);
+    createMarker("Levin College of Law", "Levin Law", 29.649490931415606, -82.35904405713241, map, $markerList);
+    createMarker("Library West", "Library West", 29.6512680840507, -82.34290443289392, map, $markerList);
+    createMarker("Marston Science Library", "Marston Library", 29.648085853704796, -82.34384642078679, map, $markerList);
+    createMarker("Newell Hall", "Newell Hall", 29.649101626325493, -82.34505776974727, map, $markerList);
+    createMarker("Rawlings Hall", "Rawlings", 29.64625374767942, -82.34294851018656, map, $markerList);
+    createMarker("Reitz Union", "Reitz Union", 29.646364274528647, -82.3477643199959, map, $markerList);
+    createMarker("Shands Hospital", "Shands", 29.639944711575975, -82.3427951651843, map, $markerList);
+    createMarker("Southwest Recreation Center", "Southwest Recreation Center", 29.638531773297153, -82.36824877685449, map, $markerList);
+    createMarker("The Hub", "The Hub", 29.648177903466213, -82.34552207762731, map, $markerList);
+    createMarker("Turlington Plaza", "Turlington Plaza", 29.64872043094608, -82.34452127134229, map, $markerList);
 
     /* Notes:
         - Graham, Beaty, Little Hall, and Harn curently excluded -- food data is not present on Dine on Campus
