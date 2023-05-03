@@ -108,7 +108,7 @@ async function getMenuDetails(restaurantID, category) {
                     <h1 class="mb-0 title">${category}</h1>
                     </button>
                 </h2>
-                <div id="${category}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div id="${category.replace(/ /g, '-').toLowerCase()}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         ${mealTypes.map(mealType => {
                             const filteredItems = items.filter(item => item.mealType === mealType);
@@ -138,7 +138,7 @@ async function getMenuDetails(restaurantID, category) {
             `;
 
             $('#accordionHTML').append(accordionHTML);
-            
+            openCurrCategory(category);
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -244,4 +244,24 @@ function getMenuItemDetails(itemID, itemName) {
         
     $('#item-details').append(modalHTML);
 
+}
+
+function openCurrCategory(category) {
+    // Get category accordion ID
+    categoryID = category.replace(/ /g, '-').toLowerCase();
+
+    // Get current time and open the corresponding category accordion
+    const today = new Date();
+    const currentHour = today.getHours();
+    let currCategory;
+
+    if (currentHour >= 11 && currentHour < 15) // 11am – 3pm
+        currCategory = 'lunch';
+    else if (currentHour >= 15 && currentHour < 23) // 3pm - 11pm
+        currCategory = 'dinner';
+    else
+        currCategory = 'breakfast';
+
+    if (categoryID === currCategory || categoryID === 'every-day')
+        $(`#${categoryID}`).collapse('show');
 }
