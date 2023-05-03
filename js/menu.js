@@ -104,11 +104,11 @@ async function getMenuDetails(restaurantID, category) {
             const accordionHTML = `
             <div class="accordion-item border-0 custom-shadow">
                 <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
                     <h1 class="mb-0 title">${category}</h1>
                     </button>
                 </h2>
-                <div id="${category.replace(/ /g, '-').toLowerCase()}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         ${mealTypes.map(mealType => {
                             const filteredItems = items.filter(item => item.mealType === mealType);
@@ -138,7 +138,7 @@ async function getMenuDetails(restaurantID, category) {
             `;
 
             $('#accordionHTML').append(accordionHTML);
-            openCurrCategory(category);
+            openCurrCategory(category.replace(/ /g, '-'));
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -247,21 +247,18 @@ function getMenuItemDetails(itemID, itemName) {
 }
 
 function openCurrCategory(category) {
-    // Get category accordion ID
-    categoryID = category.replace(/ /g, '-').toLowerCase();
-
     // Get current time and open the corresponding category accordion
     const today = new Date();
     const currentHour = today.getHours();
     let currCategory;
 
     if (currentHour >= 11 && currentHour < 15) // 11am – 3pm
-        currCategory = 'lunch';
+        currCategory = 'Lunch';
     else if (currentHour >= 15 && currentHour < 23) // 3pm - 11pm
-        currCategory = 'dinner';
+        currCategory = 'Dinner';
     else
-        currCategory = 'breakfast';
+        currCategory = 'Breakfast';
 
-    if (categoryID === currCategory || categoryID === 'every-day')
-        $(`#${categoryID}`).collapse('show');
+    if (category === currCategory || category === 'Every-Day')
+        $(`#${category}`).collapse('show');
 }
