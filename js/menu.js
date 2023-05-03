@@ -15,63 +15,81 @@ function getRestaurant(restaurantID) {
         url: 'backend/getRestaurant.php',
         data: {id: restaurantID},
         success: function(data) {
-        const restaurant = data;
-        console.log(restaurant);
+            const restaurant = data;
+            console.log(restaurant);
 
-        // Generate HTML dynamically
-        const menuHtml = `
-            <div class="mt-3 mb-3">
-            <div class="container">
-                <h1 class="mt-4 text-center" id="menu-title">${restaurant.name}</h1>
-                <h3 class="text-center mb-4">Weekly Schedule</h2>
-            </div>
-            </div>
+            const orderedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            let scheduleHtml = '';
 
-            <!-- Dropdowns -->
-            <div class="dropdown mb-3">
-            <button class="btn btn-secondary dropdown-toggle border-0 custom-shadow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Select Day
-            </button>
-            <ul class="dropdown-menu border-0 custom-shadow">
-                <li><a class="dropdown-item" href="#">Yesterday</a></li>
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">Tomorrow</a></li>
-            </ul>
-            <button class="btn btn-secondary dropdown-toggle border-0 custom-shadow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filter
-            </button>
-            <ul class="dropdown-menu border-0 custom-shadow">
-                <li><a class="dropdown-item" href="#">Vegetarian</a></li>
-                <li><a class="dropdown-item" href="#">Vegan</a></li>
-                <li><a class="dropdown-item" href="#">Avoiding Gluten</a></li>
-            </ul>
-            </div>
+            if (restaurant.hours) {
+                const schedule = JSON.parse(restaurant.hours);
+                scheduleHtml = `
+                    <ul>
+                    ${orderedDays.map(day => `<li>${day}: ${schedule[day]}</li>`).join('')}
+                    </ul>
+                `;
+            }
+            else {
+                scheduleHtml = `
+                    <p>No hours to display.</p>
+                `;
+            }
 
-            <!-- Accordion -->
-            <div class="accordion mb-3" id="accordionExample">
+            // Generate HTML dynamically
+            const menuHtml = `
+                <div class="mt-3 mb-3">
+                <div class="container">
+                    <h1 class="mt-4 text-center" id="menu-title">${restaurant.name}</h1>
+                    <h3 class="text-center mb-4">Weekly Schedule</h3>
+                    ${scheduleHtml}
+                </div>
+                </div>
 
-                <div id="accordionHTML">
+                <!-- Dropdowns -->
+                <div class="dropdown mb-3">
+                <button class="btn btn-secondary dropdown-toggle border-0 custom-shadow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Day
+                </button>
+                <ul class="dropdown-menu border-0 custom-shadow">
+                    <li><a class="dropdown-item" href="#">Yesterday</a></li>
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">Tomorrow</a></li>
+                </ul>
+                <button class="btn btn-secondary dropdown-toggle border-0 custom-shadow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filter
+                </button>
+                <ul class="dropdown-menu border-0 custom-shadow">
+                    <li><a class="dropdown-item" href="#">Vegetarian</a></li>
+                    <li><a class="dropdown-item" href="#">Vegan</a></li>
+                    <li><a class="dropdown-item" href="#">Avoiding Gluten</a></li>
+                </ul>
+                </div>
+
+                <!-- Accordion -->
+                <div class="accordion mb-3" id="accordionExample">
+
+                    <div id="accordionHTML">
+
+                    </div>
 
                 </div>
 
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div id="item-details">
-                <div class="modal-content">
-                    
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div id="item-details">
+                    <div class="modal-content">
+                        
+                    </div>
+                    </div>
                 </div>
                 </div>
-            </div>
-            </div>
-        `;
+            `;
 
-        $('#menu').html(menuHtml);
+            $('#menu').html(menuHtml);
 
-        // Display restaurant-specific menu
-        getMenu(restaurantID, restaurant.categories);
+            // Display restaurant-specific menu
+            getMenu(restaurantID, restaurant.categories);
 
         },
         error: function(xhr, status, error) {
@@ -168,82 +186,67 @@ function getMenuItemDetails(itemID, itemName) {
     // Clear the item-details modal that was previously rendered
     $('#item-details').empty();
 
-    // Mock data to be replaced by backend call
-    mockItemDetails = [
-        {
-            itemID: 1,
-            nutrition: {
-                Calories: 320,
-                Protein: 6,
-                Carbohydrates: 55
-            },
-            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
-            diet: ['Vegetarian']
-        },
-        {
-            itemID: 2,
-            nutrition: {
-                Calories: 320,
-                Protein: 6,
-                Carbohydrates: 55
-            },
-            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
-            diet: ['Vegetarian']
-        },
-        {
-            itemID: 3,
-            nutrition: {
-                Calories: 320,
-                Protein: 6,
-                Carbohydrates: 55
-            },
-            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
-            diet: ['Vegetarian']
-        },
-        {
-            itemID: 4,
-            nutrition: {
-                Calories: 320,
-                Protein: 6,
-                Carbohydrates: 55
-            },
-            ingredients: ['Water, Buttermilk Pancake Mix, Vegan Semi-Sweet Chocolate Chips, Fluff Marshmallow, Golden Graham Cereal, Pure Vanilla Extract (Vanilla Bean Extractives Water Alcohol)'],
-            diet: ['Vegetarian']
-        }
-    ];
-    
-    const selectedItem = mockItemDetails.find(item => item.itemID === itemID);
-
-    const modalHTML = `
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">${itemName}</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <h3>Nutritional Info</h3>
-            <ul>
-                ${Object.keys(selectedItem.nutrition).map((key) => {
-                    return `<li>${key}: ${selectedItem.nutrition[key]}</li>`
-                }).join('')}
-            </ul>
-
-            <h3>Ingredients</h3>
-            <p>${selectedItem.ingredients}</p>
+    $.ajax({
+        type: 'GET',
+        url: 'backend/getMenuItemDetails.php',
+        data: { itemID: itemID },
+        success: function(selectedItem) {
+            console.log(selectedItem);
+            nutrition = JSON.parse(selectedItem.nutrition);
+            diet = selectedItem.diet.split(",");
             
-            <h3>Dietary Preferences</h3>
-            <ul>
-                ${selectedItem.diet.map((preference) => `<li>${preference}</li>`).join('')}
-            </ul>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-    </div>
-    `;
-        
-    $('#item-details').append(modalHTML);
+            const modalHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">${itemName}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Nutritional Info</h3>
+                        <ul>
+                            ${Object.keys(nutrition).map((key) => {
+                                return `<li>${key}: ${nutrition[key]}</li>`
+                            }).join('')}
+                        </ul>
 
+                        <h3>Ingredients</h3>
+                        <p>${selectedItem.ingredients}</p>
+                        
+                        <h3>Dietary Preferences</h3>
+                        <ul>
+                            ${diet.map((preference) => `<li>${preference}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            `;
+        
+            $('#item-details').append(modalHTML);
+
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+
+            const modalHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">${itemName}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>No nutritional information to display.</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            `;
+        
+            $('#item-details').append(modalHTML);
+        }
+    });
 }
 
 function openCurrCategory(category) {
