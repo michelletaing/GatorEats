@@ -10,7 +10,7 @@
 
     $category = $_GET['category'];
     $restaurantID = $_GET['restaurantID'];
-    $stmt = $conn->prepare("SELECT DISTINCT mealType FROM items WHERE restaurantID = $restaurantID AND category = '$category'");
+    $stmt = $conn->prepare("SELECT DISTINCT mealType FROM items WHERE restaurantID = $restaurantID AND categories = '$category'");
     $stmt->execute();
     $result = $stmt->get_result();
     $mealTypes = array();
