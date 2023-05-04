@@ -5,7 +5,24 @@ $(document).ready(function() {
         itemID = $(this).data('itemid');
         itemName = $(this).data('itemname');
         getMenuItemDetails(itemID, itemName);
-    });    
+    });  
+    
+    $('#menu').on('click', '#all', function() {
+        $('#accordionHTML').empty();
+        getMenu($(this).data('restaurantid'), $(this).data('categories'));
+    });
+
+    $('#menu').on('click', '#vegetarian', function() {
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Vegetarian');
+    });
+
+    $('#menu').on('click', '#vegan', function() {
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Vegan');
+    });
+
+    $('#menu').on('click', '#avoiding-gluten', function() {
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Avoiding Gluten');
+    });
 });
 
 function getRestaurant(restaurantID) {
@@ -48,7 +65,6 @@ function getRestaurant(restaurantID) {
                     Select Day
                 </button>
                 <ul class="dropdown-menu border-0 custom-shadow">
-                    <li><a class="dropdown-item" href="#">Yesterday</a></li>
                     <li><a class="dropdown-item" href="#">Today</a></li>
                     <li><a class="dropdown-item" href="#">Tomorrow</a></li>
                 </ul>
@@ -56,9 +72,10 @@ function getRestaurant(restaurantID) {
                     Filter
                 </button>
                 <ul class="dropdown-menu border-0 custom-shadow">
-                    <li><a class="dropdown-item" href="#">Vegetarian</a></li>
-                    <li><a class="dropdown-item" href="#">Vegan</a></li>
-                    <li><a class="dropdown-item" href="#">Avoiding Gluten</a></li>
+                <li><a class="dropdown-item" id="all" data-restaurantid="${restaurant.restaurantID}" data-categories="${restaurant.categories}" href="#">All</a></li>
+                    <li><a class="dropdown-item" id="vegetarian" data-restaurantid="${restaurant.restaurantID}" data-categories="${restaurant.categories}" href="#">Vegetarian</a></li>
+                    <li><a class="dropdown-item" id="vegan" data-restaurantid="${restaurant.restaurantID}" data-categories="${restaurant.categories}" href="#">Vegan</a></li>
+                    <li><a class="dropdown-item" id="avoiding-gluten" data-restaurantid="${restaurant.restaurantID}" data-categories="${restaurant.categories}" href="#">Avoiding Gluten</a></li>
                 </ul>
                 </div>
 
@@ -101,6 +118,17 @@ async function getMenu(restaurantID, categories) {
 
     for (const category of categoriesArray) {
         await getMenuDetails(restaurantID, category);
+    }
+}
+
+async function getFilteredMenu(restaurantID, categories, diet) {
+    $('#accordionHTML').empty();
+
+    const categoriesArray = categories.split(",");
+    console.log(categoriesArray);
+
+    for (const category of categoriesArray) {
+        await getFilteredMenuDetails(restaurantID, category, diet);
     }
 }
 
@@ -148,6 +176,65 @@ async function getMenuDetails(restaurantID, category) {
                             `;
                         }).join('')}
                     </div>
+                </div>
+            </div>
+            `;
+
+            $('#accordionHTML').append(accordionHTML);
+            openCurrCategory(category.replace(/ /g, '-'));
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+async function getFilteredMenuDetails(restaurantID, category, diet) {
+    // Get all the meal types (The Kitchen, Gator Fire Grill, etc.)
+    mealTypes = await getMealTypes(restaurantID, category);
+    console.log(mealTypes)
+
+    $.ajax({
+        type: 'GET',
+        url: 'backend/getFilteredMenu.php',
+        data: {restaurantID: restaurantID, diet: diet, category: category },
+        success: function(items) {
+            console.log(items);
+
+            const accordionHTML = `
+            <div class="accordion-item border-0 custom-shadow">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
+                    <h1 class="mb-0 title">${category}</h1>
+                    </button>
+                </h2>
+                <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    ${mealTypes.map(mealType => {
+                        const filteredItems = items.filter(item => item.mealType === mealType);
+                        if (filteredItems.length > 0) {
+                            return `
+                            <table class="table table-hover table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><h4>${mealType}</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${filteredItems.map(item => `
+                                        <tr>
+                                            <td data-bs-toggle="modal" id=${item.itemID} data-bs-target="#exampleModal" class="menu-item" data-itemid="${item.itemID}" data-itemname="${item.name}">
+                                                <p class="mb-0">${item.name}</p>
+                                                <p class="subtitle mb-0"><em>${item.details}</em></p>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                            `;
+                        }
+                    }).join('')}
+                </div>
                 </div>
             </div>
             `;
