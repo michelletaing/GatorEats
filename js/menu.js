@@ -41,9 +41,8 @@ function getRestaurant(restaurantID) {
             if (restaurant.hours) {
                 const schedule = JSON.parse(restaurant.hours);
                 scheduleHtml = `
-                    <div>
-                    ${orderedDays.map(day => `<div>${day}: ${schedule[day]}</div>`).join('')}
-                    </div>
+                    <h5>WEEKLY SCHEDULE</h5>
+                    ${orderedDays.map(day => `<div><strong>${day}</strong>  ${schedule[day]}</div>`).join('')}
                 `;
             }
 
@@ -53,7 +52,6 @@ function getRestaurant(restaurantID) {
                 <div class="container">
                     <h1 class="mt-4 mb-3 text-center" id="menu-title">${restaurant.name}</h1>
                     <div class="text-center">
-                        <h5>WEEKLY SCHEDULE</h5>
                         ${scheduleHtml}
                     </div>
                 </div>
