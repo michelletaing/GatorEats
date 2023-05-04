@@ -14,7 +14,7 @@
         header('Content-Type: application/json');
         echo json_encode(['error' => 'ID parameter is required']);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM restaurants WHERE id = ?");
+        $stmt = $conn->prepare("SELECT * FROM restaurants WHERE restaurantID = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();

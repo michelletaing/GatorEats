@@ -204,8 +204,8 @@ function getMenuItemDetails(itemID, itemName) {
                     <div class="modal-body">
                         <h3>Nutritional Info</h3>
                         <ul>
-                            ${Object.keys(nutrition).map((key) => {
-                                return `<li>${key}: ${nutrition[key]}</li>`
+                            ${Object.keys(nutrition[0]).map((key) => {
+                                return `<li>${key}: ${nutrition[0][key]}</li>`
                             }).join('')}
                         </ul>
 

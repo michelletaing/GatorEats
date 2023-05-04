@@ -3,5 +3,5 @@
     $host = 'mysql.cise.ufl.edu';
     $username = 'michelletaing';
     $password = '6aXgNsQxTwz5CSt';
-    $database = 'gator_eats_test';
+    $database = 'GatorEats';
 ?>

@@ -32,9 +32,9 @@ function createCards(container, location) {
             $.each(diningLocations, function(index, location) {
                 // HTML string to structure card
                 var card = '<div class="col">' +
-                '<a href="menu.html?location=' + location.name.replace(/ /g, '-') + '&id=' + location.ID + '">' +
-                    '<div class="card border-0 custom-shadow" id="' + location.ID + '">' +
-                    '<img src="' + location.imageUrl + '" class="card-img-top" alt="...">' +
+                '<a href="menu.html?location=' + location.name.replace(/ /g, '-') + '&id=' + location.restaurantID + '">' +
+                    '<div class="card border-0 custom-shadow" id="' + location.restaurantID + '">' +
+                    '<img src="' + 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' + '" class="card-img-top" alt="...">' +
                     '<div class="card-body">' +
                         '<h5 class="card-title">' + location.name + '</h5>' +
                         '<p class="card-text">' + location.description + '</p>' +
