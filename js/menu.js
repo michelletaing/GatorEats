@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    // Default menu setting
+    selectedDay = 'today';
+    selectedFilter = 'COMPLETE';
+
     // When a menu item is clicked, this triggers a function
     // that will dynamically generate the modal.
     $('#menu').on('click', '.menu-item', function() {
@@ -8,28 +12,34 @@ $(document).ready(function() {
     });  
     
     $('#menu').on('click', '#all', function() {
+        selectedFilter = 'COMPLETE';
         $('#accordionHTML').empty();
-        getMenu($(this).data('restaurantid'), $(this).data('categories'));
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'COMPLETE', selectedDay);
     });
 
     $('#menu').on('click', '#vegetarian', function() {
-        getFilteredMenuByDiet($(this).data('restaurantid'), $(this).data('categories'), 'Vegetarian');
+        selectedFilter = 'VEGETARIAN';
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Vegetarian', selectedDay);
     });
 
     $('#menu').on('click', '#vegan', function() {
-        getFilteredMenuByDiet($(this).data('restaurantid'), $(this).data('categories'), 'Vegan');
+        selectedFilter = 'VEGAN';
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Vegan', selectedDay);
     });
 
     $('#menu').on('click', '#avoiding-gluten', function() {
-        getFilteredMenuByDiet($(this).data('restaurantid'), $(this).data('categories'), 'Avoiding Gluten');
+        selectedFilter = 'AVOIDING GLUTEN';
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), 'Avoiding Gluten', selectedDay);
     });
 
     $('#menu').on('click', '#today', function() {
-        getFilteredMenuByDay($(this).data('restaurantid'), $(this).data('categories'), 'today');
+        selectedDay = 'today';
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), selectedFilter, 'today');
     });
 
     $('#menu').on('click', '#tomorrow', function() {
-        getFilteredMenuByDay($(this).data('restaurantid'), $(this).data('categories'), 'tomorrow');
+        selectedDay = 'tomorrow';
+        getFilteredMenu($(this).data('restaurantid'), $(this).data('categories'), selectedFilter, 'tomorrow');
     });
 });
 
@@ -63,7 +73,7 @@ function getRestaurant(restaurantID) {
                         ${scheduleHtml}
                     </div>
                     <div class="text-center" id="menu-day">
-                        <h5>VIEWING TODAY'S MENU</h5>
+                        <h5>VIEWING TODAY'S COMPLETE MENU</h5>
                     </div>
                 </div>
                 </div>
@@ -112,7 +122,7 @@ function getRestaurant(restaurantID) {
             $('#menu').html(menuHtml);
 
             // Display restaurant-specific menu
-            getFilteredMenuByDay(restaurantID, restaurant.categories, 'today');
+            getFilteredMenu(restaurantID, restaurant.categories, selectedFilter, selectedDay);
 
         },
         error: function(xhr, status, error) {
@@ -121,62 +131,19 @@ function getRestaurant(restaurantID) {
     });
 }
 
-async function getMenu(restaurantID, categories) {
-    const categoriesArray = categories.split(",");
-    console.log(categoriesArray);
-
-    for (const category of categoriesArray) {
-        await getMenuDetails(restaurantID, category);
-    }
-}
-
-async function getFilteredMenuByDiet(restaurantID, categories, diet) {
+async function getFilteredMenu(restaurantID, categories, diet, day) {
     $('#accordionHTML').empty();
+    setMenuName()
 
     const categoriesArray = categories.split(",");
     console.log(categoriesArray);
 
     for (const category of categoriesArray) {
-        await getFilteredMenuByDietDetails(restaurantID, category, diet);
+        await getFilteredMenuDetails(restaurantID, category, diet, day);
     }
 }
 
-async function getFilteredMenuByDay(restaurantID, categories, day) {
-    $('#accordionHTML').empty();
-    if (day == 'tomorrow')
-        $('#menu-day').html("<h5>VIEWING TOMORROW'S MENU</h5>");
-    else
-        $('#menu-day').html("<h5>VIEWING TODAY'S MENU</h5>");
-
-    const categoriesArray = categories.split(",");
-    console.log(categoriesArray);
-
-    for (const category of categoriesArray) {
-        await getFilteredMenuByDayDetails(restaurantID, category, day);
-    }
-}
-
-async function getMenuDetails(restaurantID, category) {
-    // Get all the meal types (The Kitchen, Gator Fire Grill, etc.)
-    mealTypes = await getMealTypes(restaurantID, category);
-    console.log(mealTypes)
-
-    $.ajax({
-        type: 'GET',
-        url: 'backend/getMenuByCategory.php',
-        data: {restaurantID: restaurantID, category: category},
-        success: function(items) {
-            console.log(items);
-            writeAccordion(category, items, mealTypes);
-            openCurrCategory(category.replace(/ /g, '-'));
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
-async function getFilteredMenuByDietDetails(restaurantID, category, diet) {
+async function getFilteredMenuDetails(restaurantID, category, diet, day) {
     // Get all the meal types (The Kitchen, Gator Fire Grill, etc.)
     mealTypes = await getMealTypes(restaurantID, category);
     console.log(mealTypes)
@@ -184,27 +151,7 @@ async function getFilteredMenuByDietDetails(restaurantID, category, diet) {
     $.ajax({
         type: 'GET',
         url: 'backend/getFilteredMenu.php',
-        data: {restaurantID: restaurantID, diet: diet, category: category },
-        success: function(items) {
-            console.log(items);
-            writeAccordion(category, items, mealTypes);
-            openCurrCategory(category.replace(/ /g, '-'));
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
-async function getFilteredMenuByDayDetails(restaurantID, category, day) {
-    // Get all the meal types (The Kitchen, Gator Fire Grill, etc.)
-    mealTypes = await getMealTypes(restaurantID, category);
-    console.log(mealTypes)
-
-    $.ajax({
-        type: 'GET',
-        url: 'backend/getFilteredMenuByDay.php',
-        data: {restaurantID: restaurantID, time: day, category: category },
+        data: {restaurantID: restaurantID, diet: diet, category: category, time: day },
         success: function(items) {
             console.log(items);
             writeAccordion(category, items, mealTypes);
@@ -358,4 +305,11 @@ function openCurrCategory(category) {
 
     if (category === currCategory || category === 'Every-Day')
         $(`#${category}`).collapse('show');
+}
+
+function setMenuName() {
+    if (selectedDay == 'tomorrow')
+        $('#menu-day').html("<h5>VIEWING TOMORROW'S " + `${selectedFilter}` + " MENU</h5>");
+    else
+        $('#menu-day').html("<h5>VIEWING TODAY'S " + `${selectedFilter}` + " MENU</h5>");
 }
