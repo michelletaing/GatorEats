@@ -145,11 +145,11 @@ async function getMenuDetails(restaurantID, category) {
             const accordionHTML = `
             <div class="accordion-item border-0 custom-shadow">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category.replace(/ /g, '-')}" aria-expanded="false" aria-controls="${category.replace(/ /g, '-')}">
                     <h1 class="mb-0 title">${category}</h1>
                     </button>
                 </h2>
-                <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div id="${category.replace(/ /g, '-')}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         ${mealTypes.map(mealType => {
                             const filteredItems = items.filter(item => item.mealType === mealType);
@@ -202,11 +202,11 @@ async function getFilteredMenuDetails(restaurantID, category, diet) {
             const accordionHTML = `
             <div class="accordion-item border-0 custom-shadow">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${category.replace(/ /g, '-')}" aria-expanded="false" aria-controls="${category.replace(/ /g, '-')}">
                     <h1 class="mb-0 title">${category}</h1>
                     </button>
                 </h2>
-                <div id="${category}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div id="${category.replace(/ /g, '-')}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     ${mealTypes.map(mealType => {
                         const filteredItems = items.filter(item => item.mealType === mealType);
