@@ -17,6 +17,7 @@ function createCards(container, location) {
         url: 'backend/getRestaurants.php',
         success: function(data) {
             diningLocations = data;
+            console.log(diningLocations);
 
             // Filter dining locations by location parameter, if present
             if (location) {
@@ -34,10 +35,10 @@ function createCards(container, location) {
                 var card = '<div class="col">' +
                 '<a href="menu.html?location=' + location.name.replace(/ /g, '-') + '&id=' + location.restaurantID + '">' +
                     '<div class="card border-0 custom-shadow" id="' + location.restaurantID + '">' +
-                    '<img src="' + 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' + '" class="card-img-top" alt="...">' +
+                    '<img src="' + location.image + '" class="card-img-top" alt="...">' +
                     '<div class="card-body">' +
                         '<h5 class="card-title">' + location.name + '</h5>' +
-                        '<p class="card-text">' + location.description + '</p>' +
+                        '<p class="card-text"><i class="fa-sharp fa-solid fa-location-dot"></i> ' + location.description + '</p>' +
                     '</div>' +
                     '</div>' +
                 '</a>' +
