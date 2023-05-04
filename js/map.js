@@ -103,8 +103,7 @@ function openMarkerModal(name, location) {
     var modal = new bootstrap.Modal($('#markerModal'));
 
     $('#markerModalLabel').text(name);
-    createCards($('.card-container')); // for test (temp)
-    //createCards($('.card-container'), location);
+    createCards($('.card-container'), location);
 
     if (document.fullscreenElement)
         $('#sidebar').append(modal._element);
