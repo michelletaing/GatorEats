@@ -32,7 +32,7 @@ function createCards(container, location) {
                 { name: 'Big Island Bowls', url: 'https://www.bigislandbowls.com/s/order?location=11ea6a5765a330a5bd870cc47a2b63e4' },
                 { name: 'Chick-Fil-A', url: 'https://www.chick-fil-a.com/menu' },
                 { name: 'Einstein Bros. Bagels', url: 'https://www.einsteinbros.com/menu/' },
-                { name: 'Panda Express @ Shands', url: 'https://www.pandaexpress.com/?showMenu=true' },
+                { name: 'Panda Express', url: 'https://www.pandaexpress.com/?showMenu=true' },
                 { name: 'Shake Smart', url: 'https://shakesmart.com/menu/' },
                 { name: 'Starbucks', url: 'https://www.starbucks.com/menu' }
             ];
