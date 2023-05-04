@@ -182,6 +182,26 @@ function getMealTypes(restaurantID, category) {
     });
 }
 
+function filterByDiet(diet) {
+    console.log(diet);
+    //When a diet is selected, filter the menu items by that diet using the function in backend (filterMenuItemsByDiet.php)
+    //Then, re-render the menu with the filtered items
+
+    $.ajax({
+        type: 'GET',
+        url: 'backend/filterMenuItemsByDiet.php',
+        data: { diet: diet },
+        success: function (filteredItems) {
+            console.log(filteredItems);
+            // Re-render the menu with the filtered items
+             getMenu(restaurantID, restaurant.categories);
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
 function getMenuItemDetails(itemID, itemName) {
     // Clear the item-details modal that was previously rendered
     $('#item-details').empty();
