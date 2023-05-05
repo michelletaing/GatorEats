@@ -1,4 +1,4 @@
-function createCards(container, location) {
+function createCards(container, location, sortyBy) {
     // Retrieve data (replace with call to backend)
     var diningLocations = [];
 
@@ -7,7 +7,6 @@ function createCards(container, location) {
         url: 'backend/getRestaurants.php',
         success: function(data) {
             diningLocations = data;
-            console.log(diningLocations);
 
             // Filter dining locations by location parameter, if present
             if (location) {
@@ -15,6 +14,15 @@ function createCards(container, location) {
                     return diningLocation.location === location;
                 });
             }
+
+            // Sort dining locations by name, if requested
+            if (sortyBy) {
+                diningLocations.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            }
+
+            console.log(diningLocations);
 
             // Clear card container
             container.empty();
