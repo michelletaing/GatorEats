@@ -1,12 +1,18 @@
 # GatorEats
 
-GatorEats is a centralized directory for all restaurants on campus, providing students and staff with an easy-to-use platform to find information about dining options, including locations and menus. The site also includes features to help users filter through options based on dietary restrictions and nutritional information. Our intent is to create a redesigned and optimized version of the existing UF dining website, Dine On Campus.
+GatorEats is a centralized directory for all restaurants on campus, providing students and staff with an easy-to-use platform to find information about dining options, including locations and menus. 
+The site also includes features to help users filter through options based on dietary restrictions and nutritional information. Our intent is to create a redesigned and optimized version of the existing UF dining website, Dine On Campus.
 
-Link:
-- https://www.cise.ufl.edu/~michelletaing/cis4930/gator-eats/index.html
+Features include:
+- View all restaurants/dining locations on UF's campus
+- View menus organized by meal times (breakfast, lunch, dinner); menu automatically collapses based on time of day
+- Filter through menus based on dietary preferences (vegetarian, vegan, gluten-free)
+- View future menus
 
+## Site
+You can access our site here: https://www.cise.ufl.edu/~michelletaing/cis4930/gator-eats/
 
-Logos:
+## Assets
 - https://businessservices.ufl.edu/wp-content/uploads/2022/10/UF-Campus-Map-Fall-2022__22x28-copy.pdf
 - https://cdn.cookielaw.org/logos/fbcad385-5bbd-48ba-97d4-e5bcabcd10b9/67c1852a-0424-4c45-ae27-c587b2b01745/573a432a-97c1-4b6f-b44e-1911f400a20f/1200px-Panda_Express_logo.svg.png
 - https://floridadm.org/assets/images/VSponsers/Mi%20Apa%20Logo.png
